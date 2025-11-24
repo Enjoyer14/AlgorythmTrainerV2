@@ -19,10 +19,7 @@ public final class JwtUtils {
     }
 
     private static String getRole(Claims claims) {
-        final List<String> roles = claims.get("role", List.class);
-        return roles.stream()
-                .map(String::valueOf)
-                .collect(Collectors.toSet()).toString();
+        return claims.get("role", String.class);
     }
 
 }
