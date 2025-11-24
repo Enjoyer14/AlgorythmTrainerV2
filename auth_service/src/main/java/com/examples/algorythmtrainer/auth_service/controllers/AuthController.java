@@ -5,6 +5,7 @@ import com.examples.algorythmtrainer.auth_service.models.User;
 import com.examples.algorythmtrainer.auth_service.repositories.UserRepository;
 import com.examples.algorythmtrainer.auth_service.services.AuthService;
 import jakarta.security.auth.message.AuthException;
+import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -23,14 +24,13 @@ public class AuthController {
     }
 
     @PostMapping("/login")
-    public ResponseEntity<LoginResponse> login(@RequestBody LoginRequest loginRequest) throws AuthException {
+    public ResponseEntity<LoginResponse> login(@Valid @RequestBody LoginRequest loginRequest) throws AuthException {
         final LoginResponse token = authService.login(loginRequest);
         return ResponseEntity.ok(token);
     }
 
-
     @PostMapping("/register")
-    public ResponseEntity<LoginResponse> register(@RequestBody RegisterRequest req) throws AuthException {
+    public ResponseEntity<LoginResponse> register(@Valid @RequestBody RegisterRequest req) throws AuthException {
         return ResponseEntity.ok(authService.register(req));
     }
 
@@ -45,11 +45,16 @@ public class AuthController {
     }
 
     @GetMapping("/me")
-    public ResponseEntity<LoginResponse> me() {
+    public ResponseEntity<UserResponse> me() {
         var auth = authService.getAuthInfo();
         User user = userRepository.findUserByLogin(auth.getLogin())
                 .orElseThrow();
-        return ResponseEntity.ok(new UserResponse(user.getId(), user.getLogin(), user.getName(), user.getEmail(), user.getRole()));
+        return ResponseEntity.ok(new UserResponse(
+                user.getId(),
+                user.getLogin(),
+                user.getName(),
+                user.getEmail(),
+                user.getRole()
+        ));
     }
-
 }

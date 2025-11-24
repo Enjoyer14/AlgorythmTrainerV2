@@ -30,10 +30,9 @@ public class SecurityConfig {
                         .requestMatchers("/auth/**").permitAll()
                         .anyRequest().authenticated()
                 )
-                // убираем httpBasic, если он не нужен
-                .httpBasic(httpBasic -> httpBasic.disable());
+                .httpBasic(httpBasic -> httpBasic.disable())
+                .formLogin(form -> form.disable());
 
-        // добавляем JwtFilter перед стандартным фильтром аутентификации
         http.addFilterBefore(jwtFilter, UsernamePasswordAuthenticationFilter.class);
 
         return http.build();

@@ -8,11 +8,14 @@ import lombok.Data;
 public class LoginRequest {
     @NotBlank
     @Size(min = 3, max = 50)
-    String login;
+    private String login;
 
     @NotBlank
-    @Size(min = 3, max = 255, message = "Длина пароля должна быть от 8 до 255 символов")
-    String password;
+    @Size(min = 8, max = 255, message = "Длина пароля должна быть от 8 до 255 символов")
+    private String password;
+
+    public LoginRequest() {
+    }
 
     public LoginRequest(String login, String password) {
         this.login = login;
