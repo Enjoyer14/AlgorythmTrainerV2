@@ -2,6 +2,7 @@ package com.examples.algorythmtrainer.auth_service.controllers;
 
 import com.examples.algorythmtrainer.auth_service.dto.LoginRequest;
 import com.examples.algorythmtrainer.auth_service.dto.LoginResponse;
+import com.examples.algorythmtrainer.auth_service.dto.RefreshJwtRequest;
 import com.examples.algorythmtrainer.auth_service.dto.userRequest;
 import com.examples.algorythmtrainer.auth_service.repositories.UserRepository;
 import com.examples.algorythmtrainer.auth_service.services.AuthService;
@@ -21,14 +22,22 @@ public class AuthController {
         this.authService = authService;
     }
 
-    @GetMapping("/user/{id}")
-    public ResponseEntity<userRequest> userById(@PathVariable int id) {
-        return ResponseEntity.ok(authService.findUser(id));
-    }
-
     @PostMapping("/login")
     public ResponseEntity<LoginResponse> login(@RequestBody LoginRequest loginRequest) throws AuthException {
         final LoginResponse token = authService.login(loginRequest);
+        return ResponseEntity.ok(token);
+    }
+
+
+    @PostMapping("/token")
+    public ResponseEntity<LoginResponse> getNewAccessToken(@RequestBody RefreshJwtRequest request) throws AuthException {
+        final LoginResponse token = authService.getAccessToken(request.getRefreshToken());
+        return ResponseEntity.ok(token);
+    }
+
+    @PostMapping("/refresh")
+    public ResponseEntity<LoginResponse> getNewRefreshToken(@RequestBody RefreshJwtRequest request) throws AuthException {
+        final LoginResponse token = authService.refresh(request.getRefreshToken());
         return ResponseEntity.ok(token);
     }
 

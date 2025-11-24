@@ -13,7 +13,11 @@ public class JwtAuthentication implements Authentication {
     private String role;
 
     @Override
-    public Collection<? extends GrantedAuthority> getAuthorities() { return role; }
+    public Collection<? extends GrantedAuthority> getAuthorities() {
+        return java.util.Collections.singletonList(
+                new org.springframework.security.core.authority.SimpleGrantedAuthority(role.toUpperCase())
+        );
+    }
 
     @Override
     public Object getCredentials() { return null; }
