@@ -5,12 +5,13 @@ import jakarta.persistence.*;
 @Entity
 @Table(name = "algorythmtheories")
 public class AlgorythmTheory {
+
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "theory_id")
     private Integer theoryId;
 
-    @OneToOne
+    @OneToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "theme_id", unique = true, nullable = false)
     private Theme theme;
 

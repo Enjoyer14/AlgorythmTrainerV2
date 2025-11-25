@@ -4,7 +4,10 @@ import jakarta.persistence.*;
 
 import java.util.List;
 
+@Entity
+@Table(name = "theme")
 public class Theme {
+
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "theme_id")
@@ -13,17 +16,17 @@ public class Theme {
     @Column(name = "title", nullable = false, unique = true, length = 100)
     private String title;
 
-    @ManyToOne
+    @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "parent_theme_id")
     private Theme parentTheme;
 
-    @OneToMany(mappedBy = "parentTheme")
+    @OneToMany(mappedBy = "parentTheme", fetch = FetchType.LAZY)
     private List<Theme> subthemes;
 
-    @OneToOne(mappedBy = "theme")
+    @OneToOne(mappedBy = "theme", fetch = FetchType.LAZY)
     private AlgorythmTheory theory;
 
-    @OneToMany(mappedBy = "theme")
+    @OneToMany(mappedBy = "theme", fetch = FetchType.LAZY)
     private List<Task> tasks;
 
     public Integer getThemeId() {

@@ -1,18 +1,17 @@
 package com.examples.algorythmtrainer.main_service.models;
 
 import jakarta.persistence.*;
-import lombok.Data;
 
 @Entity
 @Table(name = "tasktestcases")
-@Data
 public class TaskTestCase {
+
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "test_case_id")
-    private Long testCaseId;
+    private Integer testCaseId;
 
-    @ManyToOne
+    @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "task_id", nullable = false)
     private Task task;
 
@@ -25,11 +24,11 @@ public class TaskTestCase {
     @Column(name = "is_example", nullable = false)
     private Boolean isExample = false;
 
-    public Long getTestCaseId() {
+    public Integer getTestCaseId() {
         return testCaseId;
     }
 
-    public void setTestCaseId(Long testCaseId) {
+    public void setTestCaseId(Integer testCaseId) {
         this.testCaseId = testCaseId;
     }
 

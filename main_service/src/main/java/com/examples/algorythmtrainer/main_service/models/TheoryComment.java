@@ -1,31 +1,29 @@
 package com.examples.algorythmtrainer.main_service.models;
 
 import jakarta.persistence.*;
-import lombok.Data;
 
 @Entity
 @Table(name = "theorycomments")
-@Data
 public class TheoryComment {
+
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "theory_comment_id")
-    private Long theoryCommentId;
+    private Integer theoryCommentId;
 
-    @ManyToOne
+    @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "theory_id", nullable = false)
     private AlgorythmTheory theory;
 
-
-    @OneToOne
+    @OneToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "comment_id", unique = true, nullable = false)
     private Comment comment;
 
-    public Long getTheoryCommentId() {
+    public Integer getTheoryCommentId() {
         return theoryCommentId;
     }
 
-    public void setTheoryCommentId(Long theoryCommentId) {
+    public void setTheoryCommentId(Integer theoryCommentId) {
         this.theoryCommentId = theoryCommentId;
     }
 

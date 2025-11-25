@@ -1,34 +1,32 @@
 package com.examples.algorythmtrainer.main_service.models;
 
-
 import jakarta.persistence.*;
-import lombok.Data;
 
-import java.time.LocalDateTime;
+import java.time.OffsetDateTime;
 
 @Entity
 @Table(name = "comments")
-@Data
 public class Comment {
+
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "comment_id")
-    private Long commentId;
+    private Integer commentId;
 
     @Column(name = "user_id", nullable = false)
     private Integer userId;
 
     @Column(name = "date", nullable = false)
-    private LocalDateTime date = LocalDateTime.now();
+    private OffsetDateTime date = OffsetDateTime.now();
 
     @Column(name = "description", nullable = false, columnDefinition = "TEXT")
     private String description;
 
-    public Long getCommentId() {
+    public Integer getCommentId() {
         return commentId;
     }
 
-    public void setCommentId(Long commentId) {
+    public void setCommentId(Integer commentId) {
         this.commentId = commentId;
     }
 
@@ -40,11 +38,11 @@ public class Comment {
         this.userId = userId;
     }
 
-    public LocalDateTime getDate() {
+    public OffsetDateTime getDate() {
         return date;
     }
 
-    public void setDate(LocalDateTime date) {
+    public void setDate(OffsetDateTime date) {
         this.date = date;
     }
 

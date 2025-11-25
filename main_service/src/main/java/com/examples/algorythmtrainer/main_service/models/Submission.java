@@ -2,25 +2,26 @@ package com.examples.algorythmtrainer.main_service.models;
 
 import jakarta.persistence.*;
 
-import java.time.LocalDateTime;
+import java.time.OffsetDateTime;
 
 @Entity
 @Table(name = "submissions")
 public class Submission {
+
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "submission_id")
-    private Long submissionId;
+    private Integer submissionId;
 
     @Column(name = "user_id", nullable = false)
     private Integer userId;
 
-    @ManyToOne
+    @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "task_id", nullable = false)
     private Task task;
 
     @Column(name = "date", nullable = false)
-    private LocalDateTime date = LocalDateTime.now();
+    private OffsetDateTime date = OffsetDateTime.now();
 
     @Column(name = "code", nullable = false, columnDefinition = "TEXT")
     private String code;
@@ -40,11 +41,11 @@ public class Submission {
     @Column(name = "language", length = 50)
     private String language;
 
-    public Long getSubmissionId() {
+    public Integer getSubmissionId() {
         return submissionId;
     }
 
-    public void setSubmissionId(Long submissionId) {
+    public void setSubmissionId(Integer submissionId) {
         this.submissionId = submissionId;
     }
 
@@ -64,11 +65,11 @@ public class Submission {
         this.task = task;
     }
 
-    public LocalDateTime getDate() {
+    public OffsetDateTime getDate() {
         return date;
     }
 
-    public void setDate(LocalDateTime date) {
+    public void setDate(OffsetDateTime date) {
         this.date = date;
     }
 
