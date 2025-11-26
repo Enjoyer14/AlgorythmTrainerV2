@@ -1,25 +1,29 @@
 package com.examples.algorythmtrainer.main_service.controllers;
 
 
+import com.examples.algorythmtrainer.main_service.dto.CommentResponse;
 import com.examples.algorythmtrainer.main_service.dto.TheoryResponse;
 import com.examples.algorythmtrainer.main_service.models.AlgorythmTheory;
 import com.examples.algorythmtrainer.main_service.repositories.AlgorythmTheoryRepository;
 import com.examples.algorythmtrainer.main_service.services.AlgorythmTheoryService;
+import com.examples.algorythmtrainer.main_service.services.CommentService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
-import org.springframework.http.HttpStatus;
-import org.springframework.web.server.ResponseStatusException;
+
+import java.util.List;
 
 @RestController
-@RequestMapping("/theory")
+@RequestMapping("/main/theory")
 public class TheoryController {
 
-    AlgorythmTheoryService algorythmTheoryService;
+    private AlgorythmTheoryService algorythmTheoryService;
+    private CommentService commentService;
 
     @Autowired
-    public TheoryController(AlgorythmTheoryService algorythmTheoryService) {
+    public TheoryController(AlgorythmTheoryService algorythmTheoryService, CommentService commentService) {
         this.algorythmTheoryService = algorythmTheoryService;
+        this.commentService = commentService;
     }
 
     @GetMapping("/{id}")
@@ -28,7 +32,10 @@ public class TheoryController {
         return ResponseEntity.ok(response);
     }
 
-
+    @GetMapping("/{id}/comments")
+    public ResponseEntity<List<CommentResponse>> getTheoryComments(@PathVariable int id) {
+        return ResponseEntity.ok(commentService.getTheoryComments(id));
+    }
 
 
 }

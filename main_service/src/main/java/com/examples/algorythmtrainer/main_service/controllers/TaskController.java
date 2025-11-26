@@ -1,8 +1,10 @@
 package com.examples.algorythmtrainer.main_service.controllers;
 
+import com.examples.algorythmtrainer.main_service.dto.CommentResponse;
 import com.examples.algorythmtrainer.main_service.dto.TaskResponse;
 import com.examples.algorythmtrainer.main_service.dto.TasksResponse;
 import com.examples.algorythmtrainer.main_service.models.Task;
+import com.examples.algorythmtrainer.main_service.services.CommentService;
 import com.examples.algorythmtrainer.main_service.services.TaskService;
 import com.examples.algorythmtrainer.main_service.repositories.TaskRepository;
 
@@ -17,16 +19,18 @@ import java.util.List;
 import java.util.Optional;
 
 @RestController
-@RequestMapping("/tasks")
+@RequestMapping("/main/tasks")
 public class TaskController {
 
     private final TaskService taskService;
     private final TaskRepository taskRepository;
+    private CommentService commentService;
 
     @Autowired
-    public TaskController(TaskService taskService, TaskRepository taskRepository) {
+    public TaskController(TaskService taskService, TaskRepository taskRepository, CommentService commentService) {
         this.taskService = taskService;
         this.taskRepository = taskRepository;
+        this.commentService = commentService;
     }
 
 
@@ -40,5 +44,9 @@ public class TaskController {
         return ResponseEntity.ok(taskService.getTaskById(id));
     }
 
+    @GetMapping("/{id}/comments")
+    public ResponseEntity<List<CommentResponse>> getTaskComments(@PathVariable int id) {
+        return ResponseEntity.ok(commentService.getTaskComments(id));
+    }
 
 }
