@@ -1,5 +1,7 @@
 package com.examples.algorythmtrainer.main_service.controllers;
 
+import com.examples.algorythmtrainer.main_service.dto.TaskResponse;
+import com.examples.algorythmtrainer.main_service.dto.TasksResponse;
 import com.examples.algorythmtrainer.main_service.models.Task;
 import com.examples.algorythmtrainer.main_service.services.TaskService;
 import com.examples.algorythmtrainer.main_service.repositories.TaskRepository;
@@ -7,6 +9,7 @@ import com.examples.algorythmtrainer.main_service.repositories.TaskRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
@@ -18,20 +21,23 @@ import java.util.Optional;
 public class TaskController {
 
     private final TaskService taskService;
-    private final TaskRepository TaskRepository;
     private final TaskRepository taskRepository;
 
     @Autowired
-    public TaskController(final TaskService taskService, final TaskRepository userRepository, TaskRepository taskRepository) {
+    public TaskController(TaskService taskService, TaskRepository taskRepository) {
         this.taskService = taskService;
-        this.TaskRepository = userRepository;
         this.taskRepository = taskRepository;
     }
 
 
     @GetMapping("/")
-    public ResponseEntity<Optional<Task>> getAllTasks() {
-        return ResponseEntity.ok(taskRepository.getAll());
+    public ResponseEntity<List<TasksResponse>> getAllTasks() {
+        return ResponseEntity.ok(taskService.getAllTasks());
+    }
+
+    @GetMapping("/{id}")
+    public ResponseEntity<TaskResponse> getTaskById(@PathVariable Integer id) {
+        return ResponseEntity.ok(taskService.getTaskById(id));
     }
 
 
