@@ -11,4 +11,5 @@ import java.util.Optional;
 @Repository
 public interface TheoryCommentRepository extends JpaRepository<TheoryComment, Integer> {
     List<TheoryComment> findByTheory_TheoryId(Integer theoryId);
+
 }

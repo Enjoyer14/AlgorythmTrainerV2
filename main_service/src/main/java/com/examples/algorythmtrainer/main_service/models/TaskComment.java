@@ -2,6 +2,8 @@ package com.examples.algorythmtrainer.main_service.models;
 
 import jakarta.persistence.*;
 
+import java.util.Optional;
+
 @Entity
 @Table(name = "taskcomments")
 public class TaskComment {
