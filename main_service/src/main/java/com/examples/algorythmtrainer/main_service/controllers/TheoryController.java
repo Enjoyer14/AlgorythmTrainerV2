@@ -1,9 +1,11 @@
 package com.examples.algorythmtrainer.main_service.controllers;
 
 
+import com.examples.algorythmtrainer.main_service.dto.CommentRequest;
 import com.examples.algorythmtrainer.main_service.dto.CommentResponse;
 import com.examples.algorythmtrainer.main_service.dto.TheoryResponse;
 import com.examples.algorythmtrainer.main_service.models.AlgorythmTheory;
+import com.examples.algorythmtrainer.main_service.models.TheoryComment;
 import com.examples.algorythmtrainer.main_service.repositories.AlgorythmTheoryRepository;
 import com.examples.algorythmtrainer.main_service.services.AlgorythmTheoryService;
 import com.examples.algorythmtrainer.main_service.services.CommentService;
@@ -35,6 +37,12 @@ public class TheoryController {
     @GetMapping("/{id}/comments")
     public ResponseEntity<List<CommentResponse>> getTheoryComments(@PathVariable int id) {
         return ResponseEntity.ok(commentService.getTheoryComments(id));
+    }
+
+    @PostMapping("/{id}/comments")
+    public ResponseEntity<CommentResponse> addTheoryComment(@PathVariable int id, @RequestBody CommentRequest commentRequest) {
+        CommentResponse saved = commentService.addTheoryComment(commentRequest, id);
+        return ResponseEntity.ok(saved);
     }
 
 

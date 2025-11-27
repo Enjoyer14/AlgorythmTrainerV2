@@ -1,17 +1,16 @@
 package com.examples.algorythmtrainer.main_service.services;
 
 import com.examples.algorythmtrainer.main_service.dto.CommentResponse;
-import com.examples.algorythmtrainer.main_service.dto.TaskCommentRequest;
-import com.examples.algorythmtrainer.main_service.models.Comment;
-import com.examples.algorythmtrainer.main_service.models.TaskComment;
-import com.examples.algorythmtrainer.main_service.models.TheoryComment;
-import com.examples.algorythmtrainer.main_service.repositories.TaskCommentRepository;
-import com.examples.algorythmtrainer.main_service.repositories.TaskRepository;
-import com.examples.algorythmtrainer.main_service.repositories.TheoryCommentRepository;
+import com.examples.algorythmtrainer.main_service.dto.CommentRequest;
+import com.examples.algorythmtrainer.main_service.models.*;
+import com.examples.algorythmtrainer.main_service.repositories.*;
 import com.examples.algorythmtrainer.main_service.secure.JwtAuthentication;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
 
+import java.time.OffsetDateTime;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -21,11 +20,20 @@ public class CommentService {
     private TaskCommentRepository taskCommentRepository;
     private TheoryCommentRepository theoryCommentRepository;
     private TaskRepository taskRepository;
+    private CommentRepository commentRepository;
+    private AlgorythmTheoryRepository algorythmTheoryRepository;
 
     @Autowired
-    public CommentService(TaskCommentRepository taskCommentRepository, TheoryCommentRepository theoryCommentRepository) {
+    public CommentService(TaskCommentRepository taskCommentRepository,
+                          TheoryCommentRepository theoryCommentRepository,
+                          TaskRepository taskRepository,
+                          CommentRepository commentRepository,
+                          AlgorythmTheoryRepository algorythmTheoryRepository) {
         this.taskCommentRepository = taskCommentRepository;
         this.theoryCommentRepository = theoryCommentRepository;
+        this.taskRepository = taskRepository;
+        this.commentRepository = commentRepository;
+        this.algorythmTheoryRepository = algorythmTheoryRepository;
     }
 
     public List<CommentResponse> getTheoryComments(Integer theoryId) {
@@ -42,10 +50,60 @@ public class CommentService {
                 .collect(Collectors.toList());
     }
 
-    public TaskComment addTaskComment(TaskCommentRequest comment, Integer taskId){
-        Comment com = new Comment();
-        JwtAuthentication jwta = new JwtAuthentication();
+    public CommentResponse addTaskComment(CommentRequest commentRequest, Integer taskId) {
+        Integer userId = getCurrentUserId();
 
+        Task task = taskRepository.findById(taskId).orElseThrow(() -> new IllegalArgumentException("Task not found with id: " + taskId));
+
+        Comment comment = new Comment();
+        comment.setUserId(userId);
+        comment.setDescription(commentRequest.getDescription());
+        comment.setDate(OffsetDateTime.now());
+
+        Comment savedComment = commentRepository.save(comment);
+
+        TaskComment taskComment = new TaskComment();
+        taskComment.setTask(task);
+        taskComment.setComment(savedComment);
+
+        TaskComment savedTaskComment = taskCommentRepository.save(taskComment);
+
+        return new CommentResponse(savedTaskComment.getComment().getCommentId(),
+                savedTaskComment.getComment().getUserId(),
+                savedTaskComment.getComment().getDate(),
+                savedTaskComment.getComment().getDescription());
+    }
+
+    public CommentResponse addTheoryComment(CommentRequest commentRequest, Integer theoryId) {
+        Integer userId = getCurrentUserId();
+
+        AlgorythmTheory theory = algorythmTheoryRepository.findById(theoryId).orElseThrow(() -> new IllegalArgumentException("Theory not found with id: " + theoryId));
+
+        Comment comment = new Comment();
+        comment.setUserId(userId);
+        comment.setDescription(commentRequest.getDescription());
+        comment.setDate(OffsetDateTime.now());
+
+        Comment savedComment = commentRepository.save(comment);
+
+        TheoryComment theoryComment = new TheoryComment();
+        theoryComment.setTheory(theory);
+        theoryComment.setComment(savedComment);
+
+        TheoryComment savedTheoryComment = theoryCommentRepository.save(theoryComment);
+
+        return new CommentResponse(savedTheoryComment.getComment().getCommentId(),
+                savedTheoryComment.getComment().getUserId(),
+                savedTheoryComment.getComment().getDate(),
+                savedTheoryComment.getComment().getDescription());
+    }
+
+    private Integer getCurrentUserId() {
+        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+        if (authentication instanceof JwtAuthentication jwtAuth && jwtAuth.getId() != null) {
+            return jwtAuth.getId();
+        }
+        throw new IllegalStateException("Cannot determine current user id from JWT");
     }
 
     private CommentResponse toDto(TheoryComment comment) {

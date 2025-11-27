@@ -1,7 +1,7 @@
 package com.examples.algorythmtrainer.main_service.controllers;
 
 import com.examples.algorythmtrainer.main_service.dto.CommentResponse;
-import com.examples.algorythmtrainer.main_service.dto.TaskCommentRequest;
+import com.examples.algorythmtrainer.main_service.dto.CommentRequest;
 import com.examples.algorythmtrainer.main_service.dto.TaskResponse;
 import com.examples.algorythmtrainer.main_service.dto.TasksResponse;
 import com.examples.algorythmtrainer.main_service.models.TaskComment;
@@ -47,8 +47,9 @@ public class TaskController {
     }
 
     @PostMapping("/{id}/comments")
-    public TaskComment addTaskComment(@PathVariable int id, @RequestBody TaskCommentRequest taskCommentRequest) {
-        return commentService.addTaskComment(taskCommentRequest, id);
+    public ResponseEntity<CommentResponse> addTaskComment(@PathVariable int id, @RequestBody CommentRequest taskCommentRequest) {
+        CommentResponse saved = commentService.addTaskComment(taskCommentRequest, id);
+        return ResponseEntity.ok(saved);
     }
 
 }
