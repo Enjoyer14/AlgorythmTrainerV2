@@ -1,11 +1,21 @@
 package com.examples.algorythmtrainer.main_service.dto;
 
+import com.fasterxml.jackson.annotation.JsonProperty;
+
 public class TasksResponse {
 
+    @JsonProperty("task_id")
     private Integer taskId;
+
     private String title;
+
+    @JsonProperty("difficulty_level")
     private String difficultyLevel;
+
+    @JsonProperty("theme_id")
     private Integer themeId;
+
+    @JsonProperty("theme_title")
     private String themeTitle;
 
 

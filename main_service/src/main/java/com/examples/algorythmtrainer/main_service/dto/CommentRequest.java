@@ -2,6 +2,7 @@ package com.examples.algorythmtrainer.main_service.dto;
 
 public class CommentRequest {
 
+
     private String description;
 
     public CommentRequest() {

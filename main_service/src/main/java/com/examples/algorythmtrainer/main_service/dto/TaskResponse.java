@@ -1,16 +1,27 @@
 package com.examples.algorythmtrainer.main_service.dto;
 
 import com.examples.algorythmtrainer.main_service.models.TaskTestCase;
+import com.fasterxml.jackson.annotation.JsonProperty;
 
 import java.util.List;
 
 public class TaskResponse {
+
+    @JsonProperty("task_id")
     private Integer taskId;
     private String title;
     private String description;
+
+    @JsonProperty("difficulty_level")
     private String difficultyLevel;
+
+    @JsonProperty("time_limit_ms")
     private Integer timeLimitMs;
+
+    @JsonProperty("memory_limit_mb")
     private Integer memoryLimitMb;
+
+    @JsonProperty("example_tests")
     private List<TaskTestCaseExamplesResponse> taskTestCases;
 
 

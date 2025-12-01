@@ -4,6 +4,7 @@ import com.examples.algorythmtrainer.main_service.dto.ThemeResponse;
 import com.examples.algorythmtrainer.main_service.models.Theme;
 import com.examples.algorythmtrainer.main_service.repositories.ThemeRepository;
 import com.examples.algorythmtrainer.main_service.services.ThemeService;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -13,6 +14,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 import java.util.List;
 
+@Slf4j
 @RestController
 @RequestMapping("/main/themes")
 public class ThemeController {
@@ -28,6 +30,7 @@ public class ThemeController {
 
     @GetMapping("/")
     public ResponseEntity<List<ThemeResponse>> getThemes() {
+        log.info("Get themes");
         return ResponseEntity.ok(themeService.getThemes());
     }
 

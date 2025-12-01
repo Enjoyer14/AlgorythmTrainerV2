@@ -7,12 +7,14 @@ import com.examples.algorythmtrainer.main_service.models.Task;
 import com.examples.algorythmtrainer.main_service.models.TaskTestCase;
 import com.examples.algorythmtrainer.main_service.models.Theme;
 import com.examples.algorythmtrainer.main_service.repositories.TaskRepository;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
 
+@Slf4j
 @Service
 public class TaskService {
 
@@ -23,6 +25,7 @@ public class TaskService {
     }
 
     public TaskResponse getTaskById(Integer id){
+        log.info("getTaskById called with id: " + id);
         Task task = taskRepository.findById(id).orElse(null);
         List<TaskTestCaseExamplesResponse> examples = task.getTestCases().stream()
                 .filter(TaskTestCase::getIsExample)

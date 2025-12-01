@@ -1,22 +1,28 @@
 package com.examples.algorythmtrainer.auth_service.dto;
 
+import io.swagger.v3.oas.annotations.media.Schema;
 import jakarta.validation.constraints.Email;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.Size;
 
+@Schema
 public class RegisterRequest {
 
+    @Schema(description = "Имя пользователя", example = "Иван", required = true)
     @NotBlank
     @Size(min = 2, max = 255)
     private String name;
 
+    @Schema(description = "Логин пользователя", example = "ivan123", required = true)
     @NotBlank
     @Size(min = 3, max = 50)
     private String login;
 
+    @Schema(description = "Пароль пользователя", example = "strongPassword!23", required = true)
     @Size(max = 255)
     private String password;
 
+    @Schema(description = "Адрес электронной почты пользователя", example = "ivan@mail.ru", required = true)
     @Size(min = 5, max = 255, message = "Адрес электронной почты должен содержать от 5 до 255 символов")
     @NotBlank
     @Email

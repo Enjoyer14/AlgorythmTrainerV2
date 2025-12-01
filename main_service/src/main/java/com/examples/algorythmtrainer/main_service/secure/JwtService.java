@@ -9,6 +9,7 @@ import io.jsonwebtoken.io.Decoders;
 import io.jsonwebtoken.security.Keys;
 import io.jsonwebtoken.security.SignatureException;
 import lombok.NonNull;
+import lombok.extern.slf4j.Slf4j;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Value;
@@ -17,12 +18,11 @@ import org.springframework.stereotype.Service;
 import javax.crypto.SecretKey;
 import java.security.Key;
 
+@Slf4j
 @Service
 public class JwtService {
 
     private final SecretKey jwtAccessSecret;
-
-    private static final Logger log = LoggerFactory.getLogger(JwtService.class);
 
     public JwtService(
             @Value("${token.signing.access}") String jwtAccessSecret,

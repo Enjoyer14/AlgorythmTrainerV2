@@ -1,10 +1,16 @@
 package com.examples.algorythmtrainer.main_service.dto;
 
 import com.examples.algorythmtrainer.main_service.models.Theme;
+import com.fasterxml.jackson.annotation.JsonProperty;
 
 public class ThemeResponse {
+
+    @JsonProperty("theme_id")
     Integer themeId;
+
     String title;
+
+    @JsonProperty("parent_theme_id")
     Integer parentThemeId;
 
     public ThemeResponse() {

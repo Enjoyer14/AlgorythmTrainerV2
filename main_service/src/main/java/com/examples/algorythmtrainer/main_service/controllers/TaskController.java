@@ -11,6 +11,7 @@ import com.examples.algorythmtrainer.main_service.services.RabbitMQProducer;
 import com.examples.algorythmtrainer.main_service.services.TaskService;
 import com.examples.algorythmtrainer.main_service.repositories.TaskRepository;
 
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.Authentication;
@@ -22,13 +23,14 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+@Slf4j
 @RestController
 @RequestMapping("/main/tasks")
 public class TaskController {
 
     private final TaskService taskService;
     private final TaskRepository taskRepository;
-    private CommentService commentService;
+    private final CommentService commentService;
     private final RabbitMQProducer rabbitMQProducer;
     private final SubmissionRepository submissionRepository;
 
@@ -44,21 +46,25 @@ public class TaskController {
 
     @GetMapping("/")
     public ResponseEntity<List<TasksResponse>> getAllTasks() {
+        log.info("Get all tasks");
         return ResponseEntity.ok(taskService.getAllTasks());
     }
 
     @GetMapping("/{id}")
     public ResponseEntity<TaskResponse> getTaskById(@PathVariable Integer id) {
+        log.info("Get task by id: {}", id);
         return ResponseEntity.ok(taskService.getTaskById(id));
     }
 
     @GetMapping("/{id}/comments")
     public ResponseEntity<List<CommentResponse>> getTaskComments(@PathVariable int id) {
+        log.info("Get task comment by id: {}", id);
         return ResponseEntity.ok(commentService.getTaskComments(id));
     }
 
     @PostMapping("/{id}/comments")
     public ResponseEntity<CommentResponse> addTaskComment(@PathVariable int id, @RequestBody CommentRequest taskCommentRequest) {
+        log.info("Add task comment: {}", taskCommentRequest);
         CommentResponse saved = commentService.addTaskComment(taskCommentRequest, id);
         return ResponseEntity.ok(saved);
     }
@@ -71,27 +77,29 @@ public class TaskController {
             Task task = taskRepository.findById(id).orElse(null);
 
             if (task == null) {
+                log.error("Task not found");
                 Map<String, String> error = new HashMap<>();
-                error. put("msg", "Задача с таким ID не найдена");
+                error.put("msg", "Задача с таким ID не найдена");
                 return ResponseEntity.status(404).body(error);
             }
 
             if (request.getCode() == null || request.getCode().trim().isEmpty()) {
+                log.error("Code is empty");
                 Map<String, String> error = new HashMap<>();
                 error.put("msg", "Отсутствуют выполняемый код");
                 return ResponseEntity.status(400).body(error);
             }
 
-            String language = request.getLanguage() != null ?  request.getLanguage() : "python";
+            String language = request.getLanguage() != null ? request.getLanguage() : "python";
 
             Submission submission = new Submission();
             submission.setUserId(userId);
-            submission. setTask(task);
+            submission.setTask(task);
             submission.setCode(request.getCode());
             submission.setIsComplete(false);
             submission.setStatus("PENDING");
-            submission. setLanguage(language);
-            submission. setDate(OffsetDateTime.now());
+            submission.setLanguage(language);
+            submission.setDate(OffsetDateTime.now());
 
             Submission savedSubmission = submissionRepository.save(submission);
             Integer submissionId = savedSubmission. getSubmissionId();
@@ -103,20 +111,24 @@ public class TaskController {
                     request.getCode(),
                     language
             );
+            log.info("Code submitted");
 
             if (success) {
+                log.info("Code successfully submitted");
                 Map<String, Object> response = new HashMap<>();
                 response.put("msg", "Код отправлен на проверку.  Ожидайте результата.");
                 response.put("submission_id", submissionId);
                 response.put("user_id", userId);
                 return ResponseEntity.status(202).body(response);
             } else {
+                log.error("Code failed");
                 Map<String, String> error = new HashMap<>();
                 error.put("msg", "Сервис исполнения кода временно недоступен (RabbitMQ ошибка)");
                 return ResponseEntity.status(503).body(error);
             }
 
         } catch (Exception e) {
+            log.error(e.getMessage());
             Map<String, String> error = new HashMap<>();
             error.put("msg", "Внутренняя ошибка сервера");
             return ResponseEntity.status(500).body(error);

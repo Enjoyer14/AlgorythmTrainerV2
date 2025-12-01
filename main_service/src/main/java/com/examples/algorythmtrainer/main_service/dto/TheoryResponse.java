@@ -1,8 +1,15 @@
 package com.examples.algorythmtrainer.main_service.dto;
 
+import com.fasterxml.jackson.annotation.JsonProperty;
+
 public class TheoryResponse {
+
+    @JsonProperty("theory_id")
     private Integer theoryId;
+
+    @JsonProperty("theme_id")
     private Integer themeId;
+
     private String description;
 
     public TheoryResponse() {

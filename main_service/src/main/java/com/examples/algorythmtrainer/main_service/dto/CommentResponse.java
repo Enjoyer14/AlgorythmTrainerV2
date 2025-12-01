@@ -1,11 +1,18 @@
 package com.examples.algorythmtrainer.main_service.dto;
 
+import com.fasterxml.jackson.annotation.JsonProperty;
+
 import java.time.OffsetDateTime;
 import java.util.Date;
 
 public class CommentResponse {
+
+    @JsonProperty("comment_id")
     Integer commentId;
+
+    @JsonProperty("user_id")
     Integer userId;
+
     OffsetDateTime date;
     String description;
 

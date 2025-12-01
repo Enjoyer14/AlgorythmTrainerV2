@@ -5,6 +5,7 @@ import com.examples.algorythmtrainer.main_service.dto.CommentRequest;
 import com.examples.algorythmtrainer.main_service.models.*;
 import com.examples.algorythmtrainer.main_service.repositories.*;
 import com.examples.algorythmtrainer.main_service.secure.JwtAuthentication;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
@@ -14,6 +15,7 @@ import java.time.OffsetDateTime;
 import java.util.List;
 import java.util.stream.Collectors;
 
+@Slf4j
 @Service
 public class CommentService {
 
@@ -37,6 +39,7 @@ public class CommentService {
     }
 
     public List<CommentResponse> getTheoryComments(Integer theoryId) {
+        log.info("Get Theory Comments for Theory Id: {}", theoryId);
         List<TheoryComment> comments = theoryCommentRepository.findByTheory_TheoryId(theoryId);
         return comments.stream()
                 .map(this::toDto)
@@ -44,6 +47,7 @@ public class CommentService {
     }
 
     public List<CommentResponse> getTaskComments(Integer taskId) {
+        log.info("Get Task Comments for {}", taskId);
         List<TaskComment> comments = taskCommentRepository.findByTask_TaskId(taskId);
         return comments.stream()
                 .map(this::toDto)
@@ -51,6 +55,7 @@ public class CommentService {
     }
 
     public CommentResponse addTaskComment(CommentRequest commentRequest, Integer taskId) {
+        log.info("Add Task Comment called with commentRequest: {}", commentRequest);
         Integer userId = getCurrentUserId();
 
         Task task = taskRepository.findById(taskId).orElseThrow(() -> new IllegalArgumentException("Task not found with id: " + taskId));
@@ -75,6 +80,7 @@ public class CommentService {
     }
 
     public CommentResponse addTheoryComment(CommentRequest commentRequest, Integer theoryId) {
+        log.info("Add Theory Comment called with id: " + theoryId);
         Integer userId = getCurrentUserId();
 
         AlgorythmTheory theory = algorythmTheoryRepository.findById(theoryId).orElseThrow(() -> new IllegalArgumentException("Theory not found with id: " + theoryId));
@@ -101,8 +107,10 @@ public class CommentService {
     private Integer getCurrentUserId() {
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
         if (authentication instanceof JwtAuthentication jwtAuth && jwtAuth.getId() != null) {
+            log.info("Get Current User ID");
             return jwtAuth.getId();
         }
+        log.error("Cannot determine current user id from JWT");
         throw new IllegalStateException("Cannot determine current user id from JWT");
     }
 
