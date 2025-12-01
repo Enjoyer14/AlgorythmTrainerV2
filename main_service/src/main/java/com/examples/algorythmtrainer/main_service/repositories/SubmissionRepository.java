@@ -9,5 +9,4 @@ import java.util.List;
 @Repository
 public interface SubmissionRepository extends JpaRepository<Submission, Integer> {
     List<Submission> findByUserId(Integer userId);
-    List<Submission> findByTaskId(Integer taskId);
 }

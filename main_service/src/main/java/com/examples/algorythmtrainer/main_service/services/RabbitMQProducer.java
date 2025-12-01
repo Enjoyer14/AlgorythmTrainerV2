@@ -2,19 +2,22 @@ package com.examples.algorythmtrainer.main_service. services;
 
 import com.examples.algorythmtrainer.main_service.dto.SubmissionTaskMessage;
 import lombok.extern.slf4j.Slf4j;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.amqp.core.MessageDeliveryMode;
 import org.springframework. amqp.rabbit.core.RabbitTemplate;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 
-@Slf4j
 @Service
 public class RabbitMQProducer {
 
     private final RabbitTemplate rabbitTemplate;
 
-    @Value("${rabbitmq.queue. code-runner}")
+    Logger log = LoggerFactory.getLogger(RabbitMQProducer.class);
+
+    @Value("${rabbitmq.queue.code-runner}")
     private String codeRunnerQueue;
 
     @Autowired

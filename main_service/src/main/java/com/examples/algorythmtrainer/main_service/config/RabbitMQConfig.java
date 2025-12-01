@@ -12,7 +12,7 @@ public class RabbitMQConfig {
     @Value("${rabbitmq.queue.code-runner}")
     private String codeRunnerQueue;
 
-    @Value("${rabbitmq.queue. durable}")
+    @Value("${rabbitmq.queue.durable}")
     private boolean durable;
 
     @Bean

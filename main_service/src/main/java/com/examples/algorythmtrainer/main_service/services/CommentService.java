@@ -6,6 +6,8 @@ import com.examples.algorythmtrainer.main_service.models.*;
 import com.examples.algorythmtrainer.main_service.repositories.*;
 import com.examples.algorythmtrainer.main_service.secure.JwtAuthentication;
 import lombok.extern.slf4j.Slf4j;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
@@ -15,7 +17,6 @@ import java.time.OffsetDateTime;
 import java.util.List;
 import java.util.stream.Collectors;
 
-@Slf4j
 @Service
 public class CommentService {
 
@@ -24,6 +25,8 @@ public class CommentService {
     private TaskRepository taskRepository;
     private CommentRepository commentRepository;
     private AlgorythmTheoryRepository algorythmTheoryRepository;
+
+    Logger log = LoggerFactory.getLogger(CommentService.class);
 
     @Autowired
     public CommentService(TaskCommentRepository taskCommentRepository,

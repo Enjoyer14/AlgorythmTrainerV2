@@ -1,19 +1,25 @@
 package com.examples.algorythmtrainer.main_service.dto;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
+import io.swagger.v3.oas.annotations.media.Schema;
 
 import java.time.OffsetDateTime;
-import java.util.Date;
 
+@Schema(description = "Ответ с данными комментария")
 public class CommentResponse {
 
     @JsonProperty("comment_id")
+    @Schema(description = "ID комментария", example = "10")
     Integer commentId;
 
     @JsonProperty("user_id")
+    @Schema(description = "ID пользователя", example = "3")
     Integer userId;
 
+    @Schema(description = "Дата и время создания комментария", example = "2024-01-01T12:30:00Z")
     OffsetDateTime date;
+
+    @Schema(description = "Текст комментария", example = "Комментарий")
     String description;
 
     public CommentResponse() {

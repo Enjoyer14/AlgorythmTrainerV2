@@ -1,35 +1,44 @@
 package com.examples.algorythmtrainer.main_service.dto;
 
-import com.examples.algorythmtrainer.main_service.models.TaskTestCase;
 import com.fasterxml.jackson.annotation.JsonProperty;
+import io.swagger.v3.oas.annotations.media.Schema;
 
 import java.util.List;
 
+@Schema(description = "Подробная информация о задаче с примерами тестов")
 public class TaskResponse {
 
     @JsonProperty("task_id")
+    @Schema(description = "ID задачи", example = "5")
     private Integer taskId;
+
+    @Schema(description = "Название задачи", example = "Сумма чисел")
     private String title;
+
+    @Schema(description = "Описание задачи", example = "Дана последовательность чисел...")
     private String description;
 
     @JsonProperty("difficulty_level")
+    @Schema(description = "Уровень сложности задачи", example = "EASY")
     private String difficultyLevel;
 
     @JsonProperty("time_limit_ms")
+    @Schema(description = "Лимит времени в миллисекундах", example = "1000")
     private Integer timeLimitMs;
 
     @JsonProperty("memory_limit_mb")
+    @Schema(description = "Лимит памяти в мегабайтах", example = "256")
     private Integer memoryLimitMb;
 
     @JsonProperty("example_tests")
+    @Schema(description = "Примеры тестов для задачи")
     private List<TaskTestCaseExamplesResponse> taskTestCases;
-
 
     public TaskResponse() {
     }
 
     public TaskResponse(Integer taskId, String title, String description,
-                         String difficultyLevel, Integer timeLimitMs, Integer memoryLimitMb,
+                        String difficultyLevel, Integer timeLimitMs, Integer memoryLimitMb,
                         List<TaskTestCaseExamplesResponse> taskTestCases) {
         this.taskId = taskId;
         this.title = title;

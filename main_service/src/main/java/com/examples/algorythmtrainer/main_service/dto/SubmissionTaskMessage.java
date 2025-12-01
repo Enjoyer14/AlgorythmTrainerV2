@@ -1,22 +1,31 @@
 package com.examples.algorythmtrainer.main_service.dto;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
+import io.swagger.v3.oas.annotations.media.Schema;
 
-public class SubmissionTaskMessage {
+import java.io.Serializable;
+
+@Schema(description = "Сообщение в очередь для проверки решения задачи")
+public class SubmissionTaskMessage implements Serializable {
 
     @JsonProperty("submission_id")
+    @Schema(description = "ID отправки решения", example = "100")
     private Integer submissionId;
 
     @JsonProperty("task_id")
+    @Schema(description = "ID задачи", example = "5")
     private Integer taskId;
 
     @JsonProperty("user_id")
+    @Schema(description = "ID пользователя", example = "3")
     private Integer userId;
 
     @JsonProperty("code")
+    @Schema(description = "Код решения", example = "print(1+2)")
     private String code;
 
     @JsonProperty("language")
+    @Schema(description = "ЯП решения", example = "python")
     private String language;
 
     public SubmissionTaskMessage() {}

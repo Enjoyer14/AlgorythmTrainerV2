@@ -6,16 +6,19 @@ import com.examples.algorythmtrainer.main_service.models.Task;
 import com.examples.algorythmtrainer.main_service.models.Theme;
 import com.examples.algorythmtrainer.main_service.repositories.ThemeRepository;
 import lombok.extern.slf4j.Slf4j;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
 import java.util.stream.Collectors;
 
-@Slf4j
 @Service
 public class ThemeService {
     private ThemeRepository themeRepository;
+
+    Logger log = LoggerFactory.getLogger(ThemeService.class);
 
     @Autowired
     public ThemeService(ThemeRepository themeRepository) {

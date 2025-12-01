@@ -8,17 +8,20 @@ import com.examples.algorythmtrainer.main_service.models.TaskTestCase;
 import com.examples.algorythmtrainer.main_service.models.Theme;
 import com.examples.algorythmtrainer.main_service.repositories.TaskRepository;
 import lombok.extern.slf4j.Slf4j;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
 
-@Slf4j
 @Service
 public class TaskService {
 
     private final TaskRepository taskRepository;
+
+    Logger log = LoggerFactory.getLogger(TaskService.class);
 
     public TaskService(TaskRepository taskRepository) {
         this.taskRepository = taskRepository;

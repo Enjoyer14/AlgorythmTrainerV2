@@ -18,11 +18,11 @@ import org.springframework.stereotype.Service;
 import javax.crypto.SecretKey;
 import java.security.Key;
 
-@Slf4j
 @Service
 public class JwtService {
 
     private final SecretKey jwtAccessSecret;
+    Logger log = LoggerFactory.getLogger(JwtService.class);
 
     public JwtService(
             @Value("${token.signing.access}") String jwtAccessSecret,

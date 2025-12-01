@@ -1,16 +1,20 @@
 package com.examples.algorythmtrainer.main_service.dto;
 
-import com.examples.algorythmtrainer.main_service.models.Theme;
 import com.fasterxml.jackson.annotation.JsonProperty;
+import io.swagger.v3.oas.annotations.media.Schema;
 
+@Schema(description = "Информация о теме задач")
 public class ThemeResponse {
 
     @JsonProperty("theme_id")
+    @Schema(description = "ID темы", example = "2")
     Integer themeId;
 
+    @Schema(description = "Название темы", example = "Сортировки")
     String title;
 
     @JsonProperty("parent_theme_id")
+    @Schema(description = "ID родительской темы", example = "1", nullable = true)
     Integer parentThemeId;
 
     public ThemeResponse() {
